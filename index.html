@@ -13,7 +13,7 @@
             overflow: hidden;
             user-select: none;
             -webkit-user-select: none;
-            background-color: #1a202c;
+            background-color: #111827;
             color: white;
             font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, 'Helvetica Neue', 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', sans-serif;
         }
@@ -41,18 +41,18 @@
 
         /* 텍스트 크기 반응형 (vmax를 사용하여 세로/가로 상관없이 화면의 긴 쪽을 기준으로 크기 결정) */
         .score-text {
-            font-size: 25vmax;
+            font-size: 18vmax;
             line-height: 1;
             font-weight: 900;
-            text-shadow: 0 10px 20px rgba(0,0,0,0.3);
+            text-shadow: 0 8px 16px rgba(0,0,0,0.4);
         }
         .team-name-text {
-            font-size: 6vmax;
+            font-size: 4vmax;
             font-weight: 700;
             text-shadow: 0 4px 6px rgba(0,0,0,0.3);
         }
         .timer-text {
-            font-size: 8vmax;
+            font-size: 5vmax;
             font-weight: 800;
             font-variant-numeric: tabular-nums;
         }
@@ -60,7 +60,7 @@
         /* 하단 컨트롤러 투명도 전환 */
         .controls-hover {
             opacity: 0.3;
-            transition: opacity 0.3s;
+            transition: opacity 0.2s;
         }
         .controls-hover:hover, .controls-hover:active {
             opacity: 1;
@@ -70,83 +70,98 @@
 <body>
 
     <!-- 앱 컨테이너 -->
-    <div id="app-container" class="flex flex-col">
+    <div id="app-container" class="flex flex-col h-full w-full overflow-hidden">
         
         <!-- 화면 1: 설정 화면 -->
-        <div id="setup-screen" class="w-full h-full flex flex-col items-center justify-center bg-gray-800 p-8 overflow-y-auto">
-            <h1 class="text-4xl font-bold mb-8">점수판 설정</h1>
-            
-            <div class="bg-gray-700 p-6 rounded-2xl w-full max-w-2xl shadow-xl">
-                <!-- 타이머 설정 -->
-                <div class="mb-6 border-b border-gray-600 pb-6">
-                    <div class="flex items-center justify-between mb-4">
-                        <label class="text-xl font-semibold">경기 시간 (타이머) 사용</label>
-                        <!-- 토글 스위치 -->
-                        <label class="relative inline-flex items-center cursor-pointer">
-                            <input type="checkbox" id="setup-use-timer" class="sr-only peer" checked onchange="toggleTimerSetup()">
-                            <div class="w-14 h-7 bg-gray-500 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-6 after:w-6 after:transition-all peer-checked:bg-blue-500"></div>
-                        </label>
+        <div id="setup-screen" class="w-full h-full flex flex-col items-center justify-center bg-gray-900 p-4 overflow-hidden select-none">
+            <div class="bg-gray-800 p-4 rounded-2xl w-full max-w-2xl shadow-2xl border border-gray-700 flex flex-col justify-between max-h-full overflow-hidden">
+                
+                <!-- 타이틀 -->
+                <h1 class="text-2xl font-black text-center text-blue-400 mb-3 tracking-wide">점수판 설정</h1>
+                
+                <div class="flex flex-col gap-3 overflow-hidden">
+                    <!-- 타이머 설정 & 세트 스코어 (가로로 한 줄 배치) -->
+                    <div class="grid grid-cols-2 gap-3 border-b border-gray-700 pb-3">
+                        <!-- 경기 시간 타이머 -->
+                        <div class="flex items-center justify-between bg-gray-700/40 p-2 rounded-xl gap-2">
+                            <div class="flex items-center gap-2">
+                                <span class="text-sm font-bold whitespace-nowrap">타이머</span>
+                                <label class="relative inline-flex items-center cursor-pointer scale-90">
+                                    <input type="checkbox" id="setup-use-timer" class="sr-only peer" checked onchange="toggleTimerSetup()">
+                                    <div class="w-11 h-6 bg-gray-500 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-500"></div>
+                                </label>
+                            </div>
+                            
+                            <div id="timer-inputs" class="flex items-center gap-1 transition-opacity duration-200">
+                                <input type="number" id="setup-min" value="10" min="0" class="w-11 text-center text-sm p-1 bg-gray-950 rounded border border-gray-600 outline-none focus:ring-1 focus:ring-blue-500">
+                                <span class="text-xs text-gray-300">분</span>
+                                <input type="number" id="setup-sec" value="00" min="0" max="59" class="w-11 text-center text-sm p-1 bg-gray-950 rounded border border-gray-600 outline-none focus:ring-1 focus:ring-blue-500">
+                                <span class="text-xs text-gray-300">초</span>
+                            </div>
+                        </div>
+
+                        <!-- 세트 스코어 사용 여부 -->
+                        <div class="flex items-center justify-between bg-gray-700/40 p-2 rounded-xl">
+                            <span class="text-sm font-bold whitespace-nowrap">세트 스코어</span>
+                            <label class="relative inline-flex items-center cursor-pointer scale-90">
+                                <input type="checkbox" id="setup-use-set" class="sr-only peer">
+                                <div class="w-11 h-6 bg-gray-500 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-500"></div>
+                            </label>
+                        </div>
                     </div>
-                    
-                    <div id="timer-inputs" class="flex items-center gap-4 transition-opacity duration-300">
-                        <input type="number" id="setup-min" value="10" min="0" class="w-24 text-center text-2xl p-2 bg-gray-800 rounded-lg outline-none focus:ring-2 focus:ring-blue-500">
-                        <span class="text-2xl">분</span>
-                        <input type="number" id="setup-sec" value="00" min="0" max="59" class="w-24 text-center text-2xl p-2 bg-gray-800 rounded-lg outline-none focus:ring-2 focus:ring-blue-500">
-                        <span class="text-2xl">초</span>
+
+                    <!-- 팀 개수 설정 -->
+                    <div class="flex items-center justify-between bg-gray-700/40 p-2 rounded-xl">
+                        <span class="text-sm font-bold whitespace-nowrap">팀 개수</span>
+                        <div class="flex gap-2">
+                            <button onclick="setTeamCount(2)" id="btn-team-2" class="px-4 py-1 bg-blue-600 rounded-lg text-xs font-black transition">2팀</button>
+                            <button onclick="setTeamCount(3)" id="btn-team-3" class="px-4 py-1 bg-gray-600 rounded-lg text-xs font-black transition">3팀</button>
+                            <button onclick="setTeamCount(4)" id="btn-team-4" class="px-4 py-1 bg-gray-600 rounded-lg text-xs font-black transition">4팀</button>
+                        </div>
+                    </div>
+
+                    <!-- 팀 상세 설정 (2열 격자 구조로 변경하여 상하 높이 극소화) -->
+                    <div id="team-settings-container" class="grid grid-cols-2 gap-2 overflow-y-auto max-h-[140px] pr-1">
+                        <!-- JS로 동적 생성됨 -->
                     </div>
                 </div>
 
-                <!-- 팀 개수 설정 -->
-                <div class="mb-6">
-                    <label class="block text-xl font-semibold mb-3">팀 개수</label>
-                    <div class="flex gap-4">
-                        <button onclick="setTeamCount(2)" id="btn-team-2" class="flex-1 py-3 bg-blue-600 rounded-lg text-xl font-bold transition">2팀</button>
-                        <button onclick="setTeamCount(3)" id="btn-team-3" class="flex-1 py-3 bg-gray-600 rounded-lg text-xl font-bold transition">3팀</button>
-                        <button onclick="setTeamCount(4)" id="btn-team-4" class="flex-1 py-3 bg-gray-600 rounded-lg text-xl font-bold transition">4팀</button>
-                    </div>
-                </div>
-
-                <!-- 팀 상세 설정 -->
-                <div id="team-settings-container" class="space-y-4">
-                    <!-- JS로 동적 생성됨 -->
-                </div>
-
-                <button onclick="startGame()" class="w-full mt-8 py-4 bg-green-500 hover:bg-green-600 text-2xl font-bold rounded-xl shadow-lg transition transform hover:scale-[1.02]">
+                <button onclick="startGame()" class="w-full mt-3 py-2 bg-green-500 hover:bg-green-600 text-lg font-black rounded-xl shadow-lg transition transform active:scale-95">
                     점수판 시작하기
                 </button>
             </div>
         </div>
 
         <!-- 화면 2: 점수판 화면 -->
-        <div id="scoreboard-screen" class="hidden w-full h-full flex flex-col relative">
+        <div id="scoreboard-screen" class="hidden w-full h-full flex flex-col relative overflow-hidden">
             
-            <!-- 상단: 타이머 및 컨트롤 -->
-            <div class="absolute top-0 left-0 w-full h-24 flex items-center justify-center z-10 pointer-events-none drop-shadow-2xl">
-                <div class="bg-black/60 backdrop-blur-md px-8 py-2 rounded-b-3xl flex items-center gap-6 pointer-events-auto border border-gray-700 border-t-0">
-                    <button onclick="resetApp()" class="p-2 text-gray-400 hover:text-white transition" title="설정으로 돌아가기">
-                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+            <!-- 상단: 타이머 및 컨트롤 (정적 배치로 하단 영역 확보 및 겹침 제거) -->
+            <div class="h-14 w-full flex items-center justify-center bg-gray-950/80 border-b border-gray-800 px-4 z-10 shrink-0">
+                <div class="flex items-center gap-6 pointer-events-auto">
+                    <button onclick="resetApp()" class="p-1.5 text-gray-400 hover:text-white transition" title="설정으로 돌아가기">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
                     </button>
                     
                     <!-- 타이머 UI 래퍼 (스위치에 따라 숨김 처리됨) -->
-                    <div id="timer-ui-container" class="flex items-center gap-6">
+                    <div id="timer-ui-container" class="flex items-center gap-4">
                         <div id="display-timer" class="timer-text tracking-wider cursor-pointer" onclick="toggleTimer()">10:00</div>
                         
-                        <button id="btn-timer-toggle" onclick="toggleTimer()" class="p-2 text-white hover:text-green-400 transition">
+                        <button id="btn-timer-toggle" onclick="toggleTimer()" class="p-1 text-white hover:text-green-400 transition">
                             <!-- Play Icon -->
-                            <svg id="icon-play" class="w-10 h-10" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd"></path></svg>
-                            <!-- Pause Icon (hidden by default) -->
-                            <svg id="icon-pause" class="w-10 h-10 hidden text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zM7 8a1 1 0 012 0v4a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v4a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd"></path></svg>
+                            <svg id="icon-play" class="w-7 h-7" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd"></path></svg>
+                            <!-- Pause Icon -->
+                            <svg id="icon-pause" class="w-7 h-7 hidden text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zM7 8a1 1 0 012 0v4a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v4a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd"></path></svg>
                         </button>
 
-                        <button onclick="resetTimer()" class="p-2 text-gray-400 hover:text-red-400 transition" title="타이머 리셋">
-                            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
+                        <button onclick="resetTimer()" class="p-1 text-gray-400 hover:text-red-400 transition" title="타이머 리셋">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
                         </button>
                     </div>
                 </div>
             </div>
 
-            <!-- 중앙: 점수판 영역 -->
-            <div id="boards-container" class="flex-1 flex w-full h-full">
+            <!-- 중앙: 점수판 영역 (화면 전체 100% 분할 채우기) -->
+            <div id="boards-container" class="flex-1 flex w-full overflow-hidden">
                 <!-- JS로 동적 생성됨 -->
             </div>
             
@@ -157,6 +172,7 @@
         // 상태 관리
         let state = {
             useTimer: true,
+            useSetScore: false,
             teamCount: 2,
             teams: [],
             totalSeconds: 600,
@@ -168,10 +184,10 @@
         const colors = [
             { id: 'red', hex: '#ef4444', name: '레드' },
             { id: 'blue', hex: '#3b82f6', name: '블루' },
-            { id: 'green', hex: '#22c55e', name: '그린' },
-            { id: 'yellow', hex: '#eab308', name: '옐로우' },
-            { id: 'purple', hex: '#a855f7', name: '퍼플' },
-            { id: 'gray', hex: '#4b5563', name: '그레이' }
+            { id: 'green', hex: '#10b981', name: '그린' },
+            { id: 'yellow', hex: '#f59e0b', name: '옐로우' },
+            { id: 'purple', hex: '#8b5cf6', name: '퍼플' },
+            { id: 'gray', hex: '#6b7280', name: '그레이' }
         ];
 
         // 1. 설정 화면 관련 로직
@@ -214,7 +230,7 @@
             for (let i = 0; i < state.teamCount; i++) {
                 const defaultColor = colors[i % colors.length];
                 const teamDiv = document.createElement('div');
-                teamDiv.className = 'flex items-center gap-4 bg-gray-800 p-4 rounded-xl';
+                teamDiv.className = 'flex items-center gap-2 bg-gray-700/50 p-1.5 rounded-lg border border-gray-600/30';
                 
                 // 컬러 선택 옵션 생성
                 let colorOptions = colors.map(c => 
@@ -222,9 +238,9 @@
                 ).join('');
 
                 teamDiv.innerHTML = `
-                    <div class="text-xl font-bold w-12 text-gray-400">팀 ${i + 1}</div>
-                    <input type="text" id="team-name-${i}" value="${defaultColor.name}팀" placeholder="팀 이름" class="flex-1 text-xl p-2 bg-gray-700 rounded border border-gray-600 outline-none focus:border-blue-500">
-                    <select id="team-color-${i}" class="text-lg p-2 bg-gray-700 rounded border border-gray-600 outline-none w-32" style="color: ${defaultColor.hex}">
+                    <div class="text-xs font-bold text-gray-400 w-6">T${i + 1}</div>
+                    <input type="text" id="team-name-${i}" value="${defaultColor.name}팀" placeholder="팀명" class="flex-1 text-xs p-1 bg-gray-900 rounded border border-gray-700 outline-none focus:border-blue-500 w-full min-w-0">
+                    <select id="team-color-${i}" class="text-xs p-1 bg-gray-900 rounded border border-gray-700 outline-none w-16" style="color: ${defaultColor.hex}">
                         ${colorOptions}
                     </select>
                 `;
@@ -242,9 +258,10 @@
         function startGame() {
             // 타이머 사용 여부 확인
             state.useTimer = document.getElementById('setup-use-timer').checked;
+            // 세트 스코어 사용 여부 확인
+            state.useSetScore = document.getElementById('setup-use-set').checked;
 
             if (state.useTimer) {
-                // 타이머를 사용할 때만 시간 세팅 및 UI 표시
                 const m = parseInt(document.getElementById('setup-min').value) || 0;
                 const s = parseInt(document.getElementById('setup-sec').value) || 0;
                 state.totalSeconds = (m * 60) + s;
@@ -253,11 +270,8 @@
                 document.getElementById('timer-ui-container').classList.remove('hidden');
                 document.getElementById('timer-ui-container').classList.add('flex');
                 updateTimerDisplay();
-                
-                // 오디오 컨텍스트 초기화 (타이머 사용 시에만)
                 initAudioContext();
             } else {
-                // 타이머를 사용하지 않으면 UI에서 숨김
                 document.getElementById('timer-ui-container').classList.remove('flex');
                 document.getElementById('timer-ui-container').classList.add('hidden');
             }
@@ -268,7 +282,8 @@
                 state.teams.push({
                     name: document.getElementById(`team-name-${i}`).value || `팀 ${i+1}`,
                     color: document.getElementById(`team-color-${i}`).value,
-                    score: 0
+                    score: 0,
+                    setScore: 0
                 });
             }
 
@@ -293,22 +308,39 @@
 
             state.teams.forEach((team, index) => {
                 const board = document.createElement('div');
-                // 화면을 팀 개수만큼 균등 분할
-                board.className = 'flex-1 h-full flex flex-col relative transition-colors duration-300';
+                board.className = 'flex-1 h-full flex flex-col relative transition-colors duration-300 border-r last:border-0 border-black/10 overflow-hidden';
                 board.style.backgroundColor = team.color;
                 
+                // 세트 스코어 HTML 조건부 렌더링
+                let setScoreHTML = '';
+                if (state.useSetScore) {
+                    setScoreHTML = `
+                        <div class="flex items-center justify-center gap-2 bg-black/30 px-3 py-1 rounded-full mb-1 z-20 pointer-events-auto" onclick="event.stopPropagation()">
+                            <button onclick="changeSetScore(${index}, -1, event)" class="w-[3.5vmax] h-[3.5vmax] flex items-center justify-center bg-black/40 rounded-full hover:bg-black/60 active:scale-90 transition text-[2vmax] font-black leading-none">-</button>
+                            <div class="flex items-center gap-1">
+                                <span class="text-[1.2vmax] text-white/80">Set</span>
+                                <div id="set-score-${index}" class="text-[2.5vmax] font-black min-w-[2vmax] text-center">${team.setScore}</div>
+                            </div>
+                            <button onclick="changeSetScore(${index}, 1, event)" class="w-[3.5vmax] h-[3.5vmax] flex items-center justify-center bg-black/40 rounded-full hover:bg-black/60 active:scale-90 transition text-[2vmax] font-black leading-none">+</button>
+                        </div>
+                    `;
+                }
+
                 board.innerHTML = `
                     <!-- 터치 영역 (+1) -->
-                    <div class="flex-1 flex flex-col items-center justify-center cursor-pointer hover:bg-black/10 active:bg-black/20 transition"
+                    <div class="flex-1 flex flex-col items-center justify-center cursor-pointer hover:bg-black/10 active:bg-black/20 transition py-4"
                          onclick="changeScore(${index}, 1)">
-                        <div class="team-name-text mb-4 truncate w-11/12 text-center opacity-90">${team.name}</div>
+                        <div class="team-name-text mb-1 truncate w-11/12 text-center opacity-90">${team.name}</div>
+                        
+                        ${setScoreHTML}
+                        
                         <div id="score-${index}" class="score-text select-none">${team.score}</div>
                     </div>
                     
                     <!-- 하단 감소 버튼 (-1) -->
-                    <div class="absolute bottom-6 w-full flex justify-center pointer-events-none">
-                        <button onclick="changeScore(${index}, -1)" class="pointer-events-auto controls-hover bg-black/40 text-white rounded-full w-20 h-20 flex items-center justify-center backdrop-blur-sm border border-white/20 hover:bg-black/60 active:scale-90 transition transform">
-                            <svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M20 12H4"></path></svg>
+                    <div class="absolute bottom-4 w-full flex justify-center pointer-events-none z-20">
+                        <button onclick="changeScore(${index}, -1, event)" class="pointer-events-auto controls-hover bg-black/50 text-white rounded-full w-[5vmax] h-[5vmax] flex items-center justify-center backdrop-blur-sm border border-white/20 hover:bg-black/75 active:scale-90 transition transform">
+                            <svg class="w-[2.5vmax] h-[2.5vmax]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M20 12H4"></path></svg>
                         </button>
                     </div>
                 `;
@@ -316,9 +348,21 @@
             });
         }
 
-        function changeScore(teamIndex, amount) {
+        // 세트 스코어 변경 함수
+        function changeSetScore(teamIndex, amount, event) {
+            if (event) event.stopPropagation();
+            
+            state.teams[teamIndex].setScore += amount;
+            if (state.teams[teamIndex].setScore < 0) state.teams[teamIndex].setScore = 0; 
+            
+            document.getElementById(`set-score-${teamIndex}`).innerText = state.teams[teamIndex].setScore;
+        }
+
+        // 메인 점수 변경 함수
+        function changeScore(teamIndex, amount, event) {
+            if (event) event.stopPropagation();
+
             state.teams[teamIndex].score += amount;
-            // 점수가 0 이하로 내려가지 않도록 처리
             if (state.teams[teamIndex].score < 0) state.teams[teamIndex].score = 0; 
             
             document.getElementById(`score-${teamIndex}`).innerText = state.teams[teamIndex].score;
@@ -331,7 +375,6 @@
             const display = `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
             document.getElementById('display-timer').innerText = display;
 
-            // 10초 이하면 빨간색 경고
             if(state.currentSeconds <= 10 && state.currentSeconds > 0) {
                 document.getElementById('display-timer').classList.add('text-red-400');
             } else {
@@ -340,7 +383,7 @@
         }
 
         function toggleTimer() {
-            if (!state.useTimer) return; // 타이머 미사용 시 동작 안 함
+            if (!state.useTimer) return;
 
             if (state.isRunning) {
                 pauseTimer();
@@ -364,7 +407,7 @@
 
                 if (state.currentSeconds <= 0) {
                     pauseTimer();
-                    playEndSound(); // 타이머 종료음 재생
+                    playEndSound();
                 }
             }, 1000);
         }
@@ -382,7 +425,7 @@
             updateTimerDisplay();
         }
 
-        // 4. 효과음 로직 (Web Audio API - 외부 파일 불필요)
+        // 4. 효과음 로직 (Web Audio API)
         let audioCtx;
         function initAudioContext() {
             if (!audioCtx) {
@@ -406,7 +449,6 @@
                 osc.type = 'square';
                 osc.frequency.value = freq;
                 
-                // 부드러운 소리 처리 (팝 노이즈 방지)
                 gain.gain.setValueAtTime(0, time);
                 gain.gain.linearRampToValueAtTime(0.5, time + 0.05);
                 gain.gain.linearRampToValueAtTime(0, time + duration);
@@ -416,13 +458,11 @@
             }
 
             const now = audioCtx.currentTime;
-            // 삑! 삑! 삐---익! 패턴
-            beep(now, 880, 0.2);       // A5
-            beep(now + 0.4, 880, 0.2); // A5
-            beep(now + 0.8, 1318.51, 0.8); // E6 (길게)
+            beep(now, 880, 0.2);
+            beep(now + 0.4, 880, 0.2);
+            beep(now + 0.8, 1318.51, 0.8);
         }
 
-        // 초기화
         window.onload = initSetup;
     </script>
 </body>
