@@ -157,10 +157,14 @@
         <div id="scoreboard-screen" class="hidden w-full h-full flex flex-col relative overflow-hidden">
             
             <!-- 상단: 타이머 및 컨트롤 -->
-            <div class="h-14 w-full flex items-center justify-between bg-gray-950/80 border-b border-gray-800 px-4 z-10 shrink-0">
-                <!-- 왼쪽 설정 돌아가기 버튼 -->
-                <button onclick="resetApp()" class="p-1.5 text-gray-400 hover:text-white transition" title="설정으로 돌아가기">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31(2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+            <div class="h-14 w-full flex items-center justify-between bg-gray-950/80 border-b border-gray-800 px-6 z-10 shrink-0">
+                <!-- 설정 돌아가기 버튼 (터치 가독성과 범위를 높이기 위해 둥근 패딩 및 마진 추가) -->
+                <button onclick="resetApp()" class="flex items-center justify-center gap-1.5 px-3 py-1.5 bg-gray-800 hover:bg-gray-700 active:scale-95 border border-gray-700 text-gray-300 hover:text-white rounded-lg transition" title="설정으로 돌아가기">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31(2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                    </svg>
+                    <span class="text-xs font-bold">설정</span>
                 </button>
                 
                 <!-- 중앙 타이머 컨트롤 -->
@@ -182,8 +186,8 @@
                     </div>
                 </div>
 
-                <!-- 균형을 맞추기 위한 우측 가상 영역 -->
-                <div class="w-9"></div>
+                <!-- 대칭적 공간 확보를 위한 균형용 가상 영역 -->
+                <div class="w-16"></div>
             </div>
 
             <!-- 중앙: 점수판 영역 (화면 전체 100% 분할 채우기) -->
