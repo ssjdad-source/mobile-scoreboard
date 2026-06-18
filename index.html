@@ -2,8 +2,15 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>모바일 점수판</title>
+    
+    <!-- 모바일 전체화면 및 웹앱(PWA) 구동을 위한 메타 태그 -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="모바일 점수판">
+    <meta name="mobile-web-app-capable" content="yes">
+    
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         /* 기본 스타일 및 드래그/선택 방지 */
@@ -73,7 +80,15 @@
     <div id="app-container" class="flex flex-col h-full w-full overflow-hidden">
         
         <!-- 화면 1: 설정 화면 -->
-        <div id="setup-screen" class="w-full h-full flex flex-col items-center justify-center bg-gray-900 p-4 overflow-hidden select-none">
+        <div id="setup-screen" class="w-full h-full flex flex-col items-center justify-center bg-gray-900 p-4 overflow-hidden select-none relative">
+            
+            <!-- 설정 화면 우측 상단 전체화면 토글 버튼 -->
+            <button onclick="toggleFullscreen()" class="absolute top-4 right-4 p-2 bg-gray-800 hover:bg-gray-700 text-gray-300 hover:text-white rounded-xl border border-gray-700 transition z-30" title="전체화면 토글">
+                <svg id="setup-fullscreen-icon" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-5h-4m4 0v4m0-4l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"></path>
+                </svg>
+            </button>
+
             <div class="bg-gray-800 p-4 rounded-2xl w-full max-w-2xl shadow-2xl border border-gray-700 flex flex-col justify-between max-h-full overflow-hidden">
                 
                 <!-- 타이틀 -->
@@ -136,12 +151,14 @@
         <div id="scoreboard-screen" class="hidden w-full h-full flex flex-col relative overflow-hidden">
             
             <!-- 상단: 타이머 및 컨트롤 (정적 배치로 하단 영역 확보 및 겹침 제거) -->
-            <div class="h-14 w-full flex items-center justify-center bg-gray-950/80 border-b border-gray-800 px-4 z-10 shrink-0">
-                <div class="flex items-center gap-6 pointer-events-auto">
-                    <button onclick="resetApp()" class="p-1.5 text-gray-400 hover:text-white transition" title="설정으로 돌아가기">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
-                    </button>
-                    
+            <div class="h-14 w-full flex items-center justify-between bg-gray-950/80 border-b border-gray-800 px-4 z-10 shrink-0">
+                <!-- 왼쪽 설정 돌아가기 버튼 -->
+                <button onclick="resetApp()" class="p-1.5 text-gray-400 hover:text-white transition" title="설정으로 돌아가기">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                </button>
+                
+                <!-- 중앙 타이머 컨트롤 -->
+                <div class="flex items-center gap-4">
                     <!-- 타이머 UI 래퍼 (스위치에 따라 숨김 처리됨) -->
                     <div id="timer-ui-container" class="flex items-center gap-4">
                         <div id="display-timer" class="timer-text tracking-wider cursor-pointer" onclick="toggleTimer()">10:00</div>
@@ -158,6 +175,13 @@
                         </button>
                     </div>
                 </div>
+
+                <!-- 오른쪽 전체화면 토글 버튼 -->
+                <button onclick="toggleFullscreen()" class="p-1.5 text-gray-400 hover:text-white transition" title="전체화면 토글">
+                    <svg id="board-fullscreen-icon" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-5h-4m4 0v4m0-4l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"></path>
+                    </svg>
+                </button>
             </div>
 
             <!-- 중앙: 점수판 영역 (화면 전체 100% 분할 채우기) -->
@@ -292,6 +316,9 @@
             document.getElementById('scoreboard-screen').classList.remove('hidden');
 
             renderScoreboards();
+
+            // 점수판 시작 시 자동으로 전체화면 요청 시도 (사용자 터치 액션 직후이므로 브라우저 허용 가능성이 높음)
+            tryToEnterFullscreen();
         }
 
         function resetApp() {
@@ -382,6 +409,74 @@
             }
         }
 
+        // 4. 전체화면 제어 로직 (Fullscreen API)
+        function toggleFullscreen() {
+            if (!document.fullscreenElement && 
+                !document.webkitFullscreenElement && 
+                !document.mozFullScreenElement && 
+                !document.msFullscreenElement) {
+                enterFullscreen();
+            } else {
+                exitFullscreen();
+            }
+        }
+
+        function enterFullscreen() {
+            const docEl = document.documentElement;
+            if (docEl.requestFullscreen) {
+                docEl.requestFullscreen();
+            } else if (docEl.webkitRequestFullscreen) { /* Safari */
+                docEl.webkitRequestFullscreen();
+            } else if (docEl.mozRequestFullScreen) { /* Firefox */
+                docEl.mozRequestFullScreen();
+            } else if (docEl.msRequestFullscreen) { /* IE/Edge */
+                docEl.msRequestFullscreen();
+            }
+        }
+
+        function tryToEnterFullscreen() {
+            // 사용자 제스처 후 바로 실행되므로 호출 가능
+            enterFullscreen();
+        }
+
+        function exitFullscreen() {
+            if (document.exitFullscreen) {
+                document.exitFullscreen();
+            } else if (document.webkitExitFullscreen) {
+                document.webkitExitFullscreen();
+            } else if (document.mozCancelFullScreen) {
+                document.mozCancelFullScreen();
+            } else if (document.msExitFullscreen) {
+                document.msExitFullscreen();
+            }
+        }
+
+        // 전체화면 변경 감지하여 아이콘 상태 업데이트
+        function handleFullscreenChange() {
+            const isFullscreen = document.fullscreenElement || 
+                                 document.webkitFullscreenElement || 
+                                 document.mozFullScreenElement || 
+                                 document.msFullscreenElement;
+            
+            const setupIcon = document.getElementById('setup-fullscreen-icon');
+            const boardIcon = document.getElementById('board-fullscreen-icon');
+
+            // 축소 아이콘과 확장 아이콘 SVG 패스 변경
+            const expandPath = "M4 8V4m0 0h4M4 4l5 5m11-5h-4m4 0v4m0-4l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4";
+            const shrinkPath = "M4 4v4m0 0h4M4 8L9 3m11 5h-4m4 0V4m0 4l-5-5M4 20v-4m0 0h4m-4 0l5 5m11-5l-5 5m5-5v4m0-4h-4";
+
+            const currentPath = isFullscreen ? shrinkPath : expandPath;
+
+            if(setupIcon) setupIcon.querySelector('path').setAttribute('d', currentPath);
+            if(boardIcon) boardIcon.querySelector('path').setAttribute('d', currentPath);
+        }
+
+        // 전체화면 감지 리스너 추가
+        document.addEventListener('fullscreenchange', handleFullscreenChange);
+        document.addEventListener('webkitfullscreenchange', handleFullscreenChange);
+        document.addEventListener('mozfullscreenchange', handleFullscreenChange);
+        document.addEventListener('MSFullscreenChange', handleFullscreenChange);
+
         function toggleTimer() {
             if (!state.useTimer) return;
 
@@ -425,7 +520,7 @@
             updateTimerDisplay();
         }
 
-        // 4. 효과음 로직 (Web Audio API)
+        // 5. 효과음 로직 (Web Audio API)
         let audioCtx;
         function initAudioContext() {
             if (!audioCtx) {
