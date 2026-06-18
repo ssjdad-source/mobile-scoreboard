@@ -18,33 +18,41 @@
             font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, 'Helvetica Neue', 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', sans-serif;
         }
 
-        /* 세로 모드일 때 경고 화면 */
-        #portrait-warning {
-            display: none;
+        /* 앱 컨테이너 기본 (가로 모드일 때) */
+        #app-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
         }
+
+        /* 스마트폰이 세로 모드일 때 화면을 90도 강제 회전 */
         @media screen and (orientation: portrait) {
-            #portrait-warning {
-                display: flex;
-            }
             #app-container {
-                display: none;
+                top: 50%;
+                left: 50%;
+                width: 100vh;
+                height: 100vw;
+                transform: translate(-50%, -50%) rotate(90deg);
             }
         }
 
-        /* 텍스트 크기 반응형 */
+        /* 텍스트 크기 반응형 (vmax를 사용하여 세로/가로 상관없이 화면의 긴 쪽을 기준으로 크기 결정) */
         .score-text {
-            font-size: 25vw;
+            font-size: 25vmax;
             line-height: 1;
             font-weight: 900;
             text-shadow: 0 10px 20px rgba(0,0,0,0.3);
         }
         .team-name-text {
-            font-size: 6vw;
+            font-size: 6vmax;
             font-weight: 700;
             text-shadow: 0 4px 6px rgba(0,0,0,0.3);
         }
         .timer-text {
-            font-size: 8vw;
+            font-size: 8vmax;
             font-weight: 800;
             font-variant-numeric: tabular-nums;
         }
@@ -61,17 +69,8 @@
 </head>
 <body>
 
-    <!-- 세로 모드 경고 -->
-    <div id="portrait-warning" class="fixed inset-0 bg-gray-900 z-50 flex-col items-center justify-center text-center p-6">
-        <svg class="w-24 h-24 text-white mb-6 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 10.5V16a2 2 0 002 2h12a2 2 0 002-2v-5.5M4 10.5L12 4l8 6.5"></path>
-        </svg>
-        <h1 class="text-3xl font-bold text-white mb-2">화면을 가로로 회전해주세요</h1>
-        <p class="text-gray-400 text-lg">점수판은 가로 모드에서 최적화되어 있습니다.</p>
-    </div>
-
     <!-- 앱 컨테이너 -->
-    <div id="app-container" class="w-screen h-screen flex flex-col">
+    <div id="app-container" class="flex flex-col">
         
         <!-- 화면 1: 설정 화면 -->
         <div id="setup-screen" class="w-full h-full flex flex-col items-center justify-center bg-gray-800 p-8 overflow-y-auto">
