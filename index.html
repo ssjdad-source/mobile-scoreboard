@@ -88,33 +88,46 @@
                 <h1 class="text-2xl font-black text-center text-blue-400 mb-3 tracking-wide">점수판 설정</h1>
                 
                 <div class="flex flex-col gap-3 overflow-hidden">
-                    <!-- 타이머 설정 & 세트 스코어 (가로로 한 줄 배치) -->
-                    <div class="grid grid-cols-2 gap-3 border-b border-gray-700 pb-3">
+                    <!-- 타이머 설정, 세트 스코어, 터치 효과음 (가로로 3열 균등 배치) -->
+                    <div class="grid grid-cols-3 gap-2 border-b border-gray-700 pb-3 text-xs">
                         <!-- 경기 시간 타이머 -->
-                        <div class="flex items-center justify-between bg-gray-700/40 p-2 rounded-xl gap-2">
-                            <div class="flex items-center gap-2">
-                                <span class="text-sm font-bold whitespace-nowrap">타이머</span>
-                                <label class="relative inline-flex items-center cursor-pointer scale-90">
+                        <div class="flex flex-col justify-between bg-gray-700/40 p-2 rounded-xl gap-1">
+                            <div class="flex items-center justify-between">
+                                <span class="font-bold whitespace-nowrap text-gray-300">타이머</span>
+                                <label class="relative inline-flex items-center cursor-pointer scale-75">
                                     <input type="checkbox" id="setup-use-timer" class="sr-only peer" checked onchange="toggleTimerSetup()">
                                     <div class="w-11 h-6 bg-gray-500 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-500"></div>
                                 </label>
                             </div>
                             
-                            <div id="timer-inputs" class="flex items-center gap-1 transition-opacity duration-200">
-                                <input type="number" id="setup-min" value="10" min="0" class="w-11 text-center text-sm p-1 bg-gray-950 rounded border border-gray-600 outline-none focus:ring-1 focus:ring-blue-500">
-                                <span class="text-xs text-gray-300">분</span>
-                                <input type="number" id="setup-sec" value="00" min="0" max="59" class="w-11 text-center text-sm p-1 bg-gray-950 rounded border border-gray-600 outline-none focus:ring-1 focus:ring-blue-500">
-                                <span class="text-xs text-gray-300">초</span>
+                            <div id="timer-inputs" class="flex items-center justify-center gap-1 transition-opacity duration-200">
+                                <input type="number" id="setup-min" value="10" min="0" class="w-10 text-center text-xs p-1 bg-gray-950 rounded border border-gray-600 outline-none focus:ring-1 focus:ring-blue-500">
+                                <span class="text-[10px] text-gray-400">분</span>
+                                <input type="number" id="setup-sec" value="00" min="0" max="59" class="w-10 text-center text-xs p-1 bg-gray-950 rounded border border-gray-600 outline-none focus:ring-1 focus:ring-blue-500">
+                                <span class="text-[10px] text-gray-400">초</span>
                             </div>
                         </div>
 
                         <!-- 세트 스코어 사용 여부 -->
-                        <div class="flex items-center justify-between bg-gray-700/40 p-2 rounded-xl">
-                            <span class="text-sm font-bold whitespace-nowrap">세트 스코어</span>
-                            <label class="relative inline-flex items-center cursor-pointer scale-90">
-                                <input type="checkbox" id="setup-use-set" class="sr-only peer">
-                                <div class="w-11 h-6 bg-gray-500 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-500"></div>
-                            </label>
+                        <div class="flex flex-col justify-between bg-gray-700/40 p-2 rounded-xl gap-1">
+                            <span class="font-bold text-center text-gray-300">세트 스코어</span>
+                            <div class="flex justify-center">
+                                <label class="relative inline-flex items-center cursor-pointer scale-75">
+                                    <input type="checkbox" id="setup-use-set" class="sr-only peer">
+                                    <div class="w-11 h-6 bg-gray-500 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-500"></div>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- 터치 효과음 사용 여부 -->
+                        <div class="flex flex-col justify-between bg-gray-700/40 p-2 rounded-xl gap-1">
+                            <span class="font-bold text-center text-gray-300">터치 효과음</span>
+                            <div class="flex justify-center">
+                                <label class="relative inline-flex items-center cursor-pointer scale-75">
+                                    <input type="checkbox" id="setup-use-sound" class="sr-only peer" checked>
+                                    <div class="w-11 h-6 bg-gray-500 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-500"></div>
+                                </label>
+                            </div>
                         </div>
                     </div>
 
@@ -147,7 +160,7 @@
             <div class="h-14 w-full flex items-center justify-between bg-gray-950/80 border-b border-gray-800 px-4 z-10 shrink-0">
                 <!-- 왼쪽 설정 돌아가기 버튼 -->
                 <button onclick="resetApp()" class="p-1.5 text-gray-400 hover:text-white transition" title="설정으로 돌아가기">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31(2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
                 </button>
                 
                 <!-- 중앙 타이머 컨트롤 -->
@@ -186,6 +199,7 @@
         let state = {
             useTimer: true,
             useSetScore: false,
+            useScoreSound: true,
             teamCount: 2,
             teams: [],
             totalSeconds: 600,
@@ -273,6 +287,8 @@
             state.useTimer = document.getElementById('setup-use-timer').checked;
             // 세트 스코어 사용 여부 확인
             state.useSetScore = document.getElementById('setup-use-set').checked;
+            // 효과음 사용 여부 확인
+            state.useScoreSound = document.getElementById('setup-use-sound').checked;
 
             if (state.useTimer) {
                 const m = parseInt(document.getElementById('setup-min').value) || 0;
@@ -287,6 +303,10 @@
             } else {
                 document.getElementById('timer-ui-container').classList.remove('flex');
                 document.getElementById('timer-ui-container').classList.add('hidden');
+            }
+
+            if (state.useScoreSound) {
+                initAudioContext();
             }
             
             // 팀 데이터 구성
@@ -365,9 +385,15 @@
         function changeSetScore(teamIndex, amount, event) {
             if (event) event.stopPropagation();
             
+            const prevVal = state.teams[teamIndex].setScore;
             state.teams[teamIndex].setScore += amount;
             if (state.teams[teamIndex].setScore < 0) state.teams[teamIndex].setScore = 0; 
             
+            // 스코어가 실제로 변했을 때만 소리 재생
+            if (prevVal !== state.teams[teamIndex].setScore) {
+                playScoreSound(amount > 0 ? 'up' : 'down');
+            }
+
             document.getElementById(`set-score-${teamIndex}`).innerText = state.teams[teamIndex].setScore;
         }
 
@@ -375,9 +401,15 @@
         function changeScore(teamIndex, amount, event) {
             if (event) event.stopPropagation();
 
+            const prevVal = state.teams[teamIndex].score;
             state.teams[teamIndex].score += amount;
             if (state.teams[teamIndex].score < 0) state.teams[teamIndex].score = 0; 
             
+            // 스코어가 실제로 변했을 때만 소리 재생
+            if (prevVal !== state.teams[teamIndex].score) {
+                playScoreSound(amount > 0 ? 'up' : 'down');
+            }
+
             document.getElementById(`score-${teamIndex}`).innerText = state.teams[teamIndex].score;
         }
 
@@ -446,6 +478,54 @@
             }
             if (audioCtx.state === 'suspended') {
                 audioCtx.resume();
+            }
+        }
+
+        // 점수 획득/차감 효과음 재생
+        function playScoreSound(type) {
+            if (!state.useScoreSound) return;
+            initAudioContext();
+
+            if (type === 'up') {
+                // 찰랑이는 동전음 / 금전출납기 사운드 (B5 ➔ E6 맑은 사인파 연결음)
+                const now = audioCtx.currentTime;
+                const playTone = (time, freq, duration) => {
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+                    osc.connect(gain);
+                    gain.connect(audioCtx.destination);
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(freq, time);
+                    
+                    gain.gain.setValueAtTime(0, time);
+                    gain.gain.linearRampToValueAtTime(0.2, time + 0.01);
+                    gain.gain.linearRampToValueAtTime(0, time + duration);
+                    
+                    osc.start(time);
+                    osc.stop(time + duration);
+                };
+                
+                playTone(now, 987.77, 0.08); // B5 
+                playTone(now + 0.08, 1318.51, 0.25); // E6
+            } else if (type === 'down') {
+                // 꿍~ 하는 하강 무거운 타격음 (피치가 빠르게 떨어지는 부드러운 삼각파)
+                const now = audioCtx.currentTime;
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(180, now);
+                osc.frequency.exponentialRampToValueAtTime(50, now + 0.2);
+                
+                gain.gain.setValueAtTime(0, now);
+                gain.gain.linearRampToValueAtTime(0.4, now + 0.03);
+                gain.gain.linearRampToValueAtTime(0, now + 0.2);
+                
+                osc.start(now);
+                osc.stop(now + 0.2);
             }
         }
 
